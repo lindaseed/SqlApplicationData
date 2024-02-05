@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SqlApplication.Context;
+using SqlApplication.Entities;
 
-namespace SqlApplication.Repositories
+namespace SqlApplication.Repositories;
+
+public class CategoryRepository(DataContext context) : BaseRepository<CategoryEntity>(context)
 {
-    internal class CategoryRepository
-    {
-    }
+    private readonly DataContext _context = context;
+
+   
 }

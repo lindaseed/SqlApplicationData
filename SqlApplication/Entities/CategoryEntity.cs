@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace SqlApplication.Entities;
 
+[Index(nameof(CategoryName), IsUnique = true)]
 public class CategoryEntity
 {
     [Key]

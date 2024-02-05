@@ -3,22 +3,12 @@ using SqlApplication.Entities;
 
 namespace SqlApplication.Context;
 
-public class DataContext : DbContext
+public partial class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {
-
-    public DataContext()
-    {
-        
-    }
-
-    public DataContext(DbContextOptions<DataContext> options) : base(options)
-    {
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseInMemoryDatabase($"{Guid.NewGuid()}");
-    }
-
-    public DbSet<ProductEntity> Products { get; set; }
+    //public virtual DbSet<AddressEntity> Addresses { get; set; }
+    //public virtual DbSet<CategoryEntity> Categories { get; set; }
+    //public virtual DbSet<CompanyEntity> Companies { get; set; }
+    //public virtual DbSet<CustomerEntity> Customers { get; set; }
+    public virtual DbSet<ProductEntity> Products { get; set; }
+    public virtual DbSet<CategoryEntity> Categories { get; set; }
 }
