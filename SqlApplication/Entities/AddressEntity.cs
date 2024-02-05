@@ -9,5 +9,6 @@ public class AddressEntity
     public string StreetName { get; set; } = null!;
     public string PostalCode { get; set; } = null!;
     public string City { get; set; } = null!;
+    public string Address {  get; set; } = null!;
     public ICollection<CustomerEntity> Customers { get; set; } = new List<CustomerEntity>();
 }

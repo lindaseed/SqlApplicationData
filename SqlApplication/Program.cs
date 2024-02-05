@@ -12,7 +12,10 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
 {
     services.AddDbContext<DataContext>(x => x.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Webbutveckling\cSharp\SqlApplicationData\SqlApplication\Data\local-datebase-create-tables.mdf;Integrated Security=True"));
 
+    services.AddScoped<AddressRepository>();
     services.AddScoped<CategoryRepository>();
+    services.AddScoped<CustomerRepository>();
+    services.AddScoped<CustomerService>();
     services.AddScoped<ProductRepository>();
     services.AddScoped<ProductService>();
     services.AddSingleton<MenuService>();
