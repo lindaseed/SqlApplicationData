@@ -5,37 +5,28 @@ using System.Diagnostics;
 
 namespace SqlApplication.Services;
 
-public class ProductService(CategoryRepository categoryRepository, ProductRepository productRepository)
+public class ProductService(CategoryService categoryService, ProductRepository productRepository)
 {
-    private readonly CategoryRepository _categoryRepository = categoryRepository;
+    private readonly CategoryService _categoryService = categoryService;
     private readonly ProductRepository _productRepository = productRepository;
 
-    public bool CreateNewProduct(Product product)
+    public ProductEntity CreateNewProduct(string articleNumber,string title, string description, decimal price, string categoryName)
     {
-        try
+
+        var categoryEntity = _categoryService.CreateNewCategory(categoryName);
+
+        var productEntity = new ProductEntity
         {
-            if (!_productRepository.Exists(x => x.ArticleNumber == product.ArticleNumber))
-            {
-                var categoryEntity = _categoryRepository.GetOne(x => x.CategoryName == product.CategoryName);
-                categoryEntity ??= _categoryRepository.Create(new CategoryEntity { CategoryName = product.CategoryName });
+            ArticleNumber = articleNumber,
+            Title = title,
+            Description = description,
+            Price = price,
+            CategoryId = categoryEntity.Id
+            
+        };
 
-                var productEntity = new ProductEntity
-                {
-                    ArticleNumber = product.ArticleNumber,
-                    Title = product.Title,
-                    Description = product.Description,
-                    Price = product.Price,
-                    CategoryId = categoryEntity.Id
-                };
-
-                var result = _productRepository.Create(productEntity);
-                if (result != null)
-                    return true;
-            }
-        }
-        catch (Exception ex) { Debug.WriteLine("ERROR ::" + ex.Message); }
-
-        return false;
+        productEntity = _productRepository.Create(productEntity);
+        return productEntity;
     }
 
 
@@ -64,51 +55,21 @@ public class ProductService(CategoryRepository categoryRepository, ProductReposi
         return products;
     }
 
+    public ProductEntity GetProductById(int id)
+    {
+        var productEntity = _productRepository.GetOne(x => x.Id == id);
+        return productEntity;
+    }
+
+    public ProductEntity UpdateProduct(ProductEntity entity)
+    {
+        var updateProductEntity = _productRepository.Update(x => x.Id == entity.Id, entity);
+        return updateProductEntity;
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //public void CreateNewProduct()
-    //{
-    //    var productEntity = new ProductEntity();
-
-    //    Console.Clear();
-    //    Console.WriteLine("Add New Product");
-    //    Console.WriteLine();
-
-    //    Console.WriteLine("Product Name: ");
-    //    productEntity.Title = Console.ReadLine()!;
-
-    //    Console.WriteLine("Product Description: ");
-    //    productEntity.Description = Console.ReadLine()!;
-
-    //    Console.WriteLine("Product Price:");
-    //    productEntity.Price = decimal.Parse(Console.ReadLine()!);
-
-    //    var entity = _productRepository.CreateProduct(productEntity);
-    //    Console.WriteLine($"Product ID: {entity}");
-
-    //    Console.ReadKey();
-    //}
-
-    //public void ShowAllProducts()
-    //{
-    //    Console.Clear();
-    //    var products = _productRepository.GetProducts();
-    //    foreach (var product in products)
-    //    {
-    //        Console.WriteLine($"-{product.Title} \n-{product.Description} \n-{product.Price} SEK");
-    //    }
-    //}
+    public void DeleteProduct(int id)
+    {
+        _productRepository.Delete(x => x.Id == id);
+    }
 }
