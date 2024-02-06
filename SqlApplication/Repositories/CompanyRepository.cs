@@ -6,5 +6,4 @@ namespace SqlApplication.Repositories;
 public class CompanyRepository(DataContext context) : BaseRepository<CompanyEntity>(context)
 {
     private readonly DataContext _context = context;
-
 }
