@@ -14,10 +14,19 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
 
     services.AddScoped<AddressRepository>();
     services.AddScoped<CategoryRepository>();
+    services.AddScoped<CompanyRepository>();
     services.AddScoped<CustomerRepository>();
-    services.AddScoped<CustomerService>();
     services.AddScoped<ProductRepository>();
+
+
+
+    services.AddScoped<AddressService>();
+    services.AddScoped<CategoryService>();
+    services.AddScoped<CompanyService>();
+    services.AddScoped<CustomerService>();
     services.AddScoped<ProductService>();
+
+
     services.AddSingleton<MenuService>();
 
 }).Build();

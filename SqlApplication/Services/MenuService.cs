@@ -3,14 +3,9 @@ using SqlApplication.Repositories;
 
 namespace SqlApplication.Services;
 
-public class MenuService
+public class MenuService(ProductRepository productRepository)
 {
-    private readonly ProductRepository _productRepository;
-
-    public MenuService(ProductRepository productRepository)
-    {
-        _productRepository = productRepository;
-    }
+    private readonly ProductRepository _productRepository = productRepository;
 
     public void CreateProduct()
     {
