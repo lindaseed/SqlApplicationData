@@ -2,18 +2,22 @@
 using SqlApplication.Entities;
 using SqlApplication.Repositories;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace SqlApplication.Services;
 
-public class ProductService(CategoryService categoryService, ProductRepository productRepository)
+public class ProductService(CategoryService categoryService, CompanyService companyService, ProductRepository productRepository)
 {
     private readonly CategoryService _categoryService = categoryService;
+    private readonly CompanyService _companyService = companyService;
     private readonly ProductRepository _productRepository = productRepository;
+    
 
-    public ProductEntity CreateNewProduct(string articleNumber,string title, string description, decimal price, string categoryName)
+    public ProductEntity CreateNewProduct(string articleNumber,string title, string description, decimal price, string categoryName, string companyName)
     {
 
         var categoryEntity = _categoryService.CreateNewCategory(categoryName);
+        var companyEntity = _companyService.CreateNewCompany(companyName);
 
         var productEntity = new ProductEntity
         {
@@ -21,7 +25,8 @@ public class ProductService(CategoryService categoryService, ProductRepository p
             Title = title,
             Description = description,
             Price = price,
-            CategoryId = categoryEntity.Id
+            CategoryId = categoryEntity.Id,
+            CompanyId = companyEntity.Id
             
         };
 
@@ -51,7 +56,7 @@ public class ProductService(CategoryService categoryService, ProductRepository p
 
         }
         catch (Exception ex) { Debug.WriteLine("ERROR ::" + ex.Message); }
-       
+
         return products;
     }
 
@@ -61,15 +66,38 @@ public class ProductService(CategoryService categoryService, ProductRepository p
         return productEntity;
     }
 
-    public ProductEntity UpdateProduct(ProductEntity entity)
+    public ProductEntity UpdateProduct(ProductEntity productEntity)
     {
-        var updateProductEntity = _productRepository.Update(x => x.Id == entity.Id, entity);
-        return updateProductEntity;
+        try
+        {
+            var entity = _productRepository.GetOne(x => x.Id == productEntity.Id);
+            if (entity != null)
+            {
+                entity.ArticleNumber = productEntity.ArticleNumber;
+
+                var result = _productRepository.Update(entity);
+                if (result != null)
+                    return new ProductEntity { Id = entity.Id, ArticleNumber = entity.ArticleNumber };
+            }
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return null!;
+
+        //var updateProductEntity = _productRepository.Update(x => x.Id == entity.Id, entity);
+        //return updateProductEntity;
     }
 
 
-    public void DeleteProduct(int id)
+    public bool DeleteProduct(Expression<Func<ProductEntity, bool>> predicate)
     {
-        _productRepository.Delete(x => x.Id == id);
+
+        try
+        {
+            var result = _productRepository.Delete(predicate);
+            return result;
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return false;
+        //_productRepository.Delete(x => x.Id == id);
     }
 }

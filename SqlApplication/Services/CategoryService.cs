@@ -1,5 +1,9 @@
 ﻿using SqlApplication.Entities;
 using SqlApplication.Repositories;
+using System;
+using System.Diagnostics;
+using static Dapper.SqlMapper;
+using System.Linq.Expressions;
 
 namespace SqlApplication.Services;
 
@@ -14,10 +18,15 @@ public class CategoryService
 
     public CategoryEntity CreateNewCategory(string categoryName)
     {
-        var categoryEntity = _categoryRepository.GetOne(x => x.CategoryName == categoryName);
-        categoryEntity ??= _categoryRepository.Create(new CategoryEntity { CategoryName = categoryName});
+        try
+        {
+            var result = _categoryRepository.GetOne(x => x.CategoryName == categoryName);
+            result ??= _categoryRepository.Create(new CategoryEntity { CategoryName = categoryName });
 
-        return categoryEntity;
+            return new CategoryEntity { Id = result.Id, CategoryName = result.CategoryName };
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return null!;
     }
 
     public CategoryEntity GetCategoryByName(string categoryName)
@@ -41,12 +50,36 @@ public class CategoryService
 
     public CategoryEntity UpdateCategory(CategoryEntity categoryEntity)
     {
-        var updateCategory = _categoryRepository.Update(x => x.Id == categoryEntity.Id, categoryEntity);
-        return updateCategory;
+
+        try
+        {
+            var entity = _categoryRepository.GetOne(x => x.Id == categoryEntity.Id);
+            if (entity != null)
+            {
+                entity.CategoryName = categoryEntity.CategoryName;
+
+                var result = _categoryRepository.Update(entity);
+                if (result != null)
+                    return new CategoryEntity { Id = entity.Id, CategoryName = entity.CategoryName };
+            }
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return null!;
+
+
+        //var updateCategory = _categoryRepository.Update(x => x.Id == categoryEntity.Id, categoryEntity);
+        //return updateCategory;
     }
 
-    public void DeleteCategory(int id)
+    public bool DeleteCategory(Expression<Func<CategoryEntity, bool>> predicate)
     {
-        _categoryRepository.Delete(x => x.Id == id);
+        try
+        {
+            var result = _categoryRepository.Delete(predicate);
+            return result;
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return false;
+        //_categoryRepository.Delete(x => x.Id == id);
     }
 }

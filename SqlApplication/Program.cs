@@ -36,7 +36,12 @@ builder.Start();
 Console.Clear();
 
 var menuService = builder.Services.GetRequiredService<MenuService>();
+menuService.ShowProductsMenu();
 menuService.CreateProduct();
+menuService.GetProducts();
+menuService.GetOneProduct();
+menuService.UpdateProducts();
+menuService.DeleteProductById();
 //var menuService = builder.Services.GetRequiredService<ProductService>();
 //var result = menuService.CreateNewProduct(new Product
 //{

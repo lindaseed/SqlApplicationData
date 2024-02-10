@@ -1,5 +1,7 @@
 ﻿using SqlApplication.Entities;
 using SqlApplication.Repositories;
+using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace SqlApplication.Services;
 
@@ -14,10 +16,15 @@ public class CompanyService
 
     public CompanyEntity CreateNewCompany(string companyName)
     {
-        var companyEntity = _companyRepository.GetOne(x => x.CompanyName == companyName);
-        companyEntity ??= _companyRepository.Create(new CompanyEntity { CompanyName = companyName});
+        try
+        {
+            var result = _companyRepository.GetOne(x => x.CompanyName == companyName);
+            result ??= _companyRepository.Create(new CompanyEntity { CompanyName = companyName });
 
-        return companyEntity;
+            return new CompanyEntity { Id = result.Id, CompanyName = result.CompanyName };
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return null!;
     }
 
     public CompanyEntity GetCompanyByName(string companyName)
@@ -41,12 +48,34 @@ public class CompanyService
 
     public CompanyEntity UpdateCompany(CompanyEntity companyEntity)
     {
-        var updateCompany = _companyRepository.Update(x => x.Id == companyEntity.Id, companyEntity);
-        return updateCompany;
+
+        try
+        {
+            var entity = _companyRepository.GetOne(x => x.Id == companyEntity.Id);
+            if (entity != null)
+            {
+                entity.CompanyName = companyEntity.CompanyName;
+
+                var result = _companyRepository.Update(entity);
+                if (result != null)
+                    return new CompanyEntity { Id = entity.Id, CompanyName = entity.CompanyName };
+            }
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return null!;
+        //var updateCompany = _companyRepository.Update(x => x.Id == companyEntity.Id, companyEntity);
+        //return updateCompany;
     }
 
-    public void DeleteCompany(int id)
+    public bool DeleteCompany(Expression<Func<CompanyEntity, bool>> predicate)
     {
-        _companyRepository.Delete(x => x.Id == id);
+        try
+        {
+            var result = _companyRepository.Delete(predicate);
+            return result;
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return false;
+        //_companyRepository.Delete(x => x.Id == id);
     }
 }

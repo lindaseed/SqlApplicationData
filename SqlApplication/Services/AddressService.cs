@@ -1,7 +1,9 @@
 ﻿using SqlApplication.Dto;
 using SqlApplication.Entities;
 using SqlApplication.Repositories;
+using System;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace SqlApplication.Services;
 
@@ -12,11 +14,15 @@ public class AddressService(AddressRepository addressRepository)
 
     public AddressEntity CreateNewAddress(Address address)
     {
-       
-        var addressEntity = _addressRepository.GetOne(x => x.StreetName == address.StreetName && x.PostalCode == address.PostalCode && x.City == address.City);
-        addressEntity ??= _addressRepository.Create(new AddressEntity { Address = address.PostalCode });
+        try
+        {
+            var result = _addressRepository.GetOne(x => x.StreetName == address.StreetName && x.PostalCode == address.PostalCode && x.City == address.City);
+            result ??= _addressRepository.Create(new AddressEntity { Address = address.PostalCode });
 
-        return addressEntity;
+            return new AddressEntity { Id = result.Id, Address = result.Address};
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return null!;
     }
 
 
@@ -35,14 +41,41 @@ public class AddressService(AddressRepository addressRepository)
 
     public AddressEntity UpdateAddress(AddressEntity addressEntity)
     {
-        var updateAddress = _addressRepository.Update(x => x.Id == addressEntity.Id, addressEntity);
-        return updateAddress;
-        
+
+        try
+        {
+            var entity = _addressRepository.GetOne(x => x.Id == addressEntity.Id);
+            if (entity != null)
+            {
+                entity.StreetName = addressEntity.StreetName;
+                entity.PostalCode = addressEntity.PostalCode;
+                entity.City = addressEntity.City;
+
+                var result = _addressRepository.Update(entity);
+                if (result != null)
+                    return new AddressEntity { Id = result.Id, StreetName = result.StreetName, PostalCode = result.PostalCode, City = result.City};
+            }
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return null!;
+
+
+        //var updateAddress = _addressRepository.Update(x => x.Id == addressEntity.Id, addressEntity);
+        //return updateAddress;
+
     }
 
-    public void DeleteAddress(int id)
+    public bool DeleteAddress(Expression<Func<AddressEntity, bool>> predicate)
     {
-        _addressRepository.Delete(x => x.Id == id);
+
+        try
+        {
+            var result = _addressRepository.Delete(predicate);
+            return result;
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return false;
+        //_addressRepository.Delete(x => x.Id == id);
     }
 
 

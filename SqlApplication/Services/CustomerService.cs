@@ -1,7 +1,9 @@
 ﻿using SqlApplication.Dto;
 using SqlApplication.Entities;
 using SqlApplication.Repositories;
+using System;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace SqlApplication.Services;
 
@@ -61,5 +63,35 @@ public class CustomerService(AddressRepository addressRepository, CustomerReposi
         catch (Exception ex) { Debug.WriteLine("ERROR ::" + ex.Message); }
 
         return customers;
+    }
+
+
+    public CustomerEntity UpdateCustomer(CustomerEntity customerEntity)
+    {
+        try
+        {
+            var entity = _customerRepository.GetOne(x => x.Id == customerEntity.Id);
+            if (entity != null)
+            {
+                entity.Email = customerEntity.Email;
+
+                var result = _customerRepository.Update(entity);
+                if (result != null)
+                    return new CustomerEntity { Id = entity.Id, Email = entity.Email };
+            }
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return null!;
+    }
+
+    public bool DeleteCustomer(Expression<Func<CustomerEntity, bool>> predicate)
+    {
+        try
+        {
+            var result = _customerRepository.Delete(predicate);
+            return result;
+        }
+        catch (Exception ex) { Debug.Write(ex.Message); }
+        return false;
     }
 }
