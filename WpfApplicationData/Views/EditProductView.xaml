@@ -4,9 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApplicationData.Views"
+             
+             xmlns:viewmodels="clr-namespace:WpfApplicationData.ViewModels"
+             xmlns:views="clr-namespace:WpfApplicationData.Views"
+             xmlns:dto="clr-namespace:SqlApplication.Dto;assembly=SqlApplication"
+             
+             d:DataContext="{d:DesignInstance Type=viewmodels:EditProductViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             d:DesignHeight="750" d:DesignWidth="600">
+    <Grid Margin="20">
+        <StackPanel>
+            <Label Content="Update Product" HorizontalAlignment="Center" FontSize="20"/>
+            <Label Content="Article Number: " />
+            <TextBox Text="{Binding ProductForm.ArticleNumber}" Padding="2,5" />
+            <Label Content="Title: " />
+            <TextBox Text="{Binding ProductForm.Title}" Padding="2,5" />
+            <Label Content="Description: " />
+            <TextBox Text="{Binding ProductForm.Description}" Padding="2,5" />
+            <Label Content="Price: " />
+            <TextBox Text="{Binding ProductForm.Price}" Padding="2,5" />
+            <Label Content="Category Name" />
+            <TextBox Text="{Binding ProductForm.CategoryName}" Padding="2,5" />
+            <Label Content="Company Name: " />
+            <TextBlock Text="{Binding ProductForm.CompanyName}" Padding="2,5" />
+
+            <Button Content="Update" Command="{Binding UpdateCommand}" Padding="5" Margin="0,30" />
+        </StackPanel>
     </Grid>
 </UserControl>

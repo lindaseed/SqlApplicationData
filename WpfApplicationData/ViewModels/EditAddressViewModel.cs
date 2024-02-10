@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using SqlApplication.Dto;
 using SqlApplication.Services;
 
 namespace WpfApplicationData.ViewModels;
@@ -16,8 +17,11 @@ public partial class EditAddressViewModel : ObservableObject
         _addressService = addressService;
     }
 
-    [RelayCommand]
+    [ObservableProperty]
+    private Address _addressForm = new();
 
+
+    [RelayCommand]
     private void Update()
     {
         var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
