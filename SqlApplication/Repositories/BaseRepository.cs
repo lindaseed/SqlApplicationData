@@ -54,13 +54,6 @@ public abstract class BaseRepository<TEntity> where TEntity : class
         return null!;
     }
 
-
-    //public TEntity Update(Expression<Func<TEntity, bool>> expression, TEntity entity)
-    //{
-    //    var entityToUpdate = _context.Set<TEntity>().FirstOrDefault(expression);
-    //    _context.Entry(entityToUpdate!).CurrentValues.SetValues(entity);
-    //    return entityToUpdate!;
-    //}
     public virtual TEntity Update(TEntity entity)
     {
         try

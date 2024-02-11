@@ -63,8 +63,6 @@ public class CompanyService
         }
         catch (Exception ex) { Debug.Write(ex.Message); }
         return null!;
-        //var updateCompany = _companyRepository.Update(x => x.Id == companyEntity.Id, companyEntity);
-        //return updateCompany;
     }
 
     public bool DeleteCompany(Expression<Func<CompanyEntity, bool>> predicate)
@@ -76,6 +74,5 @@ public class CompanyService
         }
         catch (Exception ex) { Debug.Write(ex.Message); }
         return false;
-        //_companyRepository.Delete(x => x.Id == id);
     }
 }

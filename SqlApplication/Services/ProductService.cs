@@ -42,16 +42,17 @@ public class ProductService(CategoryService categoryService, CompanyService comp
 
         try
         {
-            var result = _productRepository.GetAll();
+            var allProduct = _productRepository.GetAll();
 
-            foreach (var item in result)
+            foreach (var product in allProduct)
                 products.Add(new Product
                 {
-                    ArticleNumber = item.ArticleNumber,
-                    Title = item.Title,
-                    Description = item.Description,
-                    Price = item.Price,
-                    CategoryName = item.Category.CategoryName
+                    ArticleNumber = product.ArticleNumber,
+                    Title = product.Title,
+                    Description = product.Description,
+                    Price = product.Price,
+                    CategoryName = product.Category.CategoryName,
+                    CompanyName = product.Company.CompanyName
                 });
 
         }
@@ -82,9 +83,6 @@ public class ProductService(CategoryService categoryService, CompanyService comp
         }
         catch (Exception ex) { Debug.Write(ex.Message); }
         return null!;
-
-        //var updateProductEntity = _productRepository.Update(x => x.Id == entity.Id, entity);
-        //return updateProductEntity;
     }
 
 
@@ -98,6 +96,5 @@ public class ProductService(CategoryService categoryService, CompanyService comp
         }
         catch (Exception ex) { Debug.Write(ex.Message); }
         return false;
-        //_productRepository.Delete(x => x.Id == id);
     }
 }

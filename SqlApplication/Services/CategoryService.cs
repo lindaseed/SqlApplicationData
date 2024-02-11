@@ -1,8 +1,6 @@
 ﻿using SqlApplication.Entities;
 using SqlApplication.Repositories;
-using System;
 using System.Diagnostics;
-using static Dapper.SqlMapper;
 using System.Linq.Expressions;
 
 namespace SqlApplication.Services;
@@ -65,10 +63,6 @@ public class CategoryService
         }
         catch (Exception ex) { Debug.Write(ex.Message); }
         return null!;
-
-
-        //var updateCategory = _categoryRepository.Update(x => x.Id == categoryEntity.Id, categoryEntity);
-        //return updateCategory;
     }
 
     public bool DeleteCategory(Expression<Func<CategoryEntity, bool>> predicate)
@@ -80,6 +74,5 @@ public class CategoryService
         }
         catch (Exception ex) { Debug.Write(ex.Message); }
         return false;
-        //_categoryRepository.Delete(x => x.Id == id);
     }
 }

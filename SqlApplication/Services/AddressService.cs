@@ -1,7 +1,6 @@
 ﻿using SqlApplication.Dto;
 using SqlApplication.Entities;
 using SqlApplication.Repositories;
-using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
@@ -58,11 +57,6 @@ public class AddressService(AddressRepository addressRepository)
         }
         catch (Exception ex) { Debug.Write(ex.Message); }
         return null!;
-
-
-        //var updateAddress = _addressRepository.Update(x => x.Id == addressEntity.Id, addressEntity);
-        //return updateAddress;
-
     }
 
     public bool DeleteAddress(Expression<Func<AddressEntity, bool>> predicate)
@@ -75,9 +69,5 @@ public class AddressService(AddressRepository addressRepository)
         }
         catch (Exception ex) { Debug.Write(ex.Message); }
         return false;
-        //_addressRepository.Delete(x => x.Id == id);
     }
-
-
-
 }

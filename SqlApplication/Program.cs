@@ -27,9 +27,7 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
     services.AddScoped<ProductService>();
 
 
-    services.AddSingleton<MenuServiceProduct>();
-    services.AddSingleton<MenuServiceCustomers>();
-    services.AddSingleton<MenuServiceAddress>();
+    services.AddSingleton<MenuService>();
 
 }).Build();
 
@@ -37,29 +35,7 @@ builder.Start();
 
 Console.Clear();
 
-var menuServiceProduct = builder.Services.GetRequiredService<MenuServiceProduct>();
-menuServiceProduct.ShowProductsMenu();
-menuServiceProduct.CreateProduct();
-menuServiceProduct.GetProducts();
-menuServiceProduct.GetOneProduct();
-menuServiceProduct.UpdateProducts();
-menuServiceProduct.DeleteProductById();
+var menuService = builder.Services.GetRequiredService<MenuService>();
+menuService.MainMenu();
 
-
-var menuServiceCustomer = builder.Services.GetRequiredService<MenuServiceCustomers>();
-menuServiceCustomer.ShowCustomerMenu();
-menuServiceCustomer.CreateCustomer();
-menuServiceCustomer.GetCustomers();
-menuServiceCustomer.GetOneCustomer();
-menuServiceCustomer.UpdateCustomer();
-menuServiceCustomer.DeleteCustomerById();
-
-
-var menuServiceAddress = builder.Services.GetRequiredService<MenuServiceAddress>();
-menuServiceAddress.ShowAddressMenu();
-menuServiceAddress.CreateAddress();
-menuServiceAddress.GetAddresses();
-menuServiceAddress.GetOneAddress();
-menuServiceAddress.UpdateAddress();
-menuServiceAddress.DeleteAddressById();
 
