@@ -12,6 +12,7 @@ public class CustomerService(AddressRepository addressRepository, CustomerReposi
     private readonly AddressRepository _addressRepository = addressRepository;
     private readonly CustomerRepository _customerRepository = customerRepository;
 
+
     public bool CreateNewCustomer(Customer customer)
     {
         try
@@ -65,6 +66,12 @@ public class CustomerService(AddressRepository addressRepository, CustomerReposi
         return customers;
     }
 
+
+    public CustomerEntity GetCustomerById(int id)
+    {
+        var customerEntity = _customerRepository.GetOne(x => x.Id == id);
+        return customerEntity;
+    }
 
     public CustomerEntity UpdateCustomer(CustomerEntity customerEntity)
     {

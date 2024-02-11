@@ -65,6 +65,10 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         builder!.Start();
+
+        var mainViewModel = builder!.Services.GetRequiredService<MainViewModel>();
+        mainViewModel.CurrentViewModel = builder.Services.GetRequiredService<CustomerListViewModel>();
+
         var mainWindow = builder!.Services.GetRequiredService<MainWindow>();
         mainWindow.Show();
     }

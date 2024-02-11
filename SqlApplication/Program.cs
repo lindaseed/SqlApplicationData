@@ -27,7 +27,9 @@ var builder = Host.CreateDefaultBuilder().ConfigureServices(services =>
     services.AddScoped<ProductService>();
 
 
-    services.AddSingleton<MenuService>();
+    services.AddSingleton<MenuServiceProduct>();
+    services.AddSingleton<MenuServiceCustomers>();
+    services.AddSingleton<MenuServiceAddress>();
 
 }).Build();
 
@@ -35,26 +37,29 @@ builder.Start();
 
 Console.Clear();
 
-var menuService = builder.Services.GetRequiredService<MenuService>();
-menuService.ShowProductsMenu();
-menuService.CreateProduct();
-menuService.GetProducts();
-menuService.GetOneProduct();
-menuService.UpdateProducts();
-menuService.DeleteProductById();
-//var menuService = builder.Services.GetRequiredService<ProductService>();
-//var result = menuService.CreateNewProduct(new Product
-//{
-//    ArticleNumber = "A2",
-//    Title = "A2 Title",
-//    Description = "A2 Description",
-//    Price = 100,
-//    CategoryName = "Test"
-//});
+var menuServiceProduct = builder.Services.GetRequiredService<MenuServiceProduct>();
+menuServiceProduct.ShowProductsMenu();
+menuServiceProduct.CreateProduct();
+menuServiceProduct.GetProducts();
+menuServiceProduct.GetOneProduct();
+menuServiceProduct.UpdateProducts();
+menuServiceProduct.DeleteProductById();
 
-//if (result)
-//    Console.WriteLine("Lyckades");
-//else
-//    Console.WriteLine("Fel");
 
-//Console.ReadKey();
+var menuServiceCustomer = builder.Services.GetRequiredService<MenuServiceCustomers>();
+menuServiceCustomer.ShowCustomerMenu();
+menuServiceCustomer.CreateCustomer();
+menuServiceCustomer.GetCustomers();
+menuServiceCustomer.GetOneCustomer();
+menuServiceCustomer.UpdateCustomer();
+menuServiceCustomer.DeleteCustomerById();
+
+
+var menuServiceAddress = builder.Services.GetRequiredService<MenuServiceAddress>();
+menuServiceAddress.ShowAddressMenu();
+menuServiceAddress.CreateAddress();
+menuServiceAddress.GetAddresses();
+menuServiceAddress.GetOneAddress();
+menuServiceAddress.UpdateAddress();
+menuServiceAddress.DeleteAddressById();
+

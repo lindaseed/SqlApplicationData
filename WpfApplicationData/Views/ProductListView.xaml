@@ -11,32 +11,37 @@
              xmlns:local="clr-namespace:WpfApplicationData.Views"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="600">
-    <Grid>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Content="New Product" Command="{Binding AddProductToListCommand}" Padding="5" />
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button Grid.Row="1" HorizontalAlignment="Right" Content="New Product" Command="{Binding AddProductToListCommand}" Padding="40 10" />
+        </Grid>
         <ListView Grid.Row="1" ItemsSource="{Binding ProductList}" HorizontalAlignment="Stretch" Margin="0,20,0,0">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type dto:Product}">
-                    <Grid Margin="2,5">
+                    <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="0,4*" />
+                            <ColumnDefinition Width="0,4*" />
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <TextBlock Text="{Binding ArticleNumber}" />
-                            <TextBlock Text="{Binding Title}" />
-                            <TextBlock Text="{Binding Description}" />
-                            <TextBlock Text="{Binding Price}" />
-                            <TextBlock Text="{Binding CategoryName}" />
-                            <TextBlock Text="{Binding CompanyName}" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Button CommandParameter="{Binding .}" Command="{Binding DataContext.EditProductCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Content="Edit" Width="60" Height="30" Padding="5" Margin="20,0,0,0" />
-                            <Button CommandParameter="{Binding .}" Command="{Binding DataContext.RemoveProductCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Content="Delete" Width="60" Height="30" Padding="5" Margin="20,0,0,0" />
-                        </StackPanel>
+                            <TextBlock Grid.Column="0" Text="{Binding ArticleNumber}" />
+                            <TextBlock Grid.Column="1" Text="{Binding Title}" />
+                            <TextBlock Grid.Column="2" Text="{Binding Description}" />
+                            <TextBlock Grid.Column="3" Text="{Binding Price}" />
+                            <TextBlock Grid.Column="4" Text="{Binding CategoryName}" />
+                            <TextBlock Grid.Column="5" Text="{Binding CompanyName}" />
+                            <Button Grid.Column="6" CommandParameter="{Binding .}" Command="{Binding Path=DataContext.EditProductCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Content="Edit" Padding="5" Margin="10,0,0,0" />
+                            <Button Grid.Column="7" CommandParameter="{Binding .}" Command="{Binding Path=DataContext.RemoveProductCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Content="Delete" Padding="5" Margin="10,0,0,0" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

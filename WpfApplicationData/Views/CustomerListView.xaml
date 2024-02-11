@@ -11,35 +11,43 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="600">
-    <Grid>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Content="New Customer" Command="{Binding AddcustomerToListCommand}" Padding="5" />
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button Grid.Row="1" HorizontalAlignment="Right" Content="New Customer" Command="{Binding AddcustomerToListCommand}" Padding="40 10" />
+            
+        </Grid>
         <ListView Grid.Row="1" ItemsSource="{Binding CustomerList}" HorizontalAlignment="Stretch" Margin="0,20,0,0">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type dto:Customer}">
-                    <Grid Margin="2,5">
+                    <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="0,4*" />
+                            <ColumnDefinition Width="0,4*" />
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <TextBlock Text="{Binding FirstName}" />
-                            <TextBlock Text="{Binding LastName}" />
-                            <TextBlock Text="{Binding Email}" />
-                            <TextBlock Text="{Binding PhoneNumber}" />
-                            <TextBlock Text="{Binding Address}" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Button CommandParameter="{Binding .}" Command="{Binding DataContext.EditCustomerCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Content="Edit" Width="60" Height="30" Padding="5" Margin="20,0,0,0" />
-                            <Button CommandParameter="{Binding .}" Command="{Binding DataContext.RemoveCustomerCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Content="Delete" Width="60" Height="30" Padding="5" Margin="20,0,0,0" />
-                        </StackPanel>
+                        
+                        <TextBlock Grid.Column="0" Text="{Binding FirstName}" Padding="3"/>
+                        <TextBlock Grid.Column="1" Text="{Binding LastName}" Padding="3"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Email}" Padding="3"/>
+                        <TextBlock Grid.Column="3" Text="{Binding PhoneNumber}" Padding="3"/>
+                        <TextBlock Grid.Column="4" Text="{Binding Address}" Padding="3"/>
+                        <Button Grid.Column="5" CommandParameter="{Binding .}" Command="{Binding Path=DataContext.EditCustomerCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Content="Edit" Padding="3" Margin="10,0,0,0" />
+                        <Button Grid.Column="6" CommandParameter="{Binding .}" Command="{Binding Path=DataContext.RemoveCustomerCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Content="Delete" Padding="3" Margin="10,0,0,0" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            
+
         </ListView>
+
     </Grid>
 </UserControl>
